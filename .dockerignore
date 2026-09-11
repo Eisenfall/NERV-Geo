@@ -1,0 +1,16 @@
+node_modules
+**/dist
+coverage
+.git
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+credentials*.json
+playwright-report
+test-results
+*.log

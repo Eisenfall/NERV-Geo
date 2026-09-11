@@ -1,0 +1,62 @@
+services:
+  redis:
+    image: redis:8-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    tmpfs:
+      - /data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      PORT: 3000
+      REDIS_URL: redis://redis:6379
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080}
+    depends_on:
+      redis:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health/ready"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    command: ["node", "apps/api/dist/worker.js"]
+    environment:
+      REDIS_URL: redis://redis:6379
+      SIPONGI_ENDPOINT: ${SIPONGI_ENDPOINT}
+      SIPONGI_DATE_PARAM: ${SIPONGI_DATE_PARAM:-date}
+      SIPONGI_PAGE_PARAM: ${SIPONGI_PAGE_PARAM:-page}
+      SIPONGI_PER_PAGE_PARAM: ${SIPONGI_PER_PAGE_PARAM:-per_page}
+      SIPONGI_PER_PAGE: ${SIPONGI_PER_PAGE:-1000}
+      SIPONGI_AUTHORIZATION: ${SIPONGI_AUTHORIZATION:-}
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+      args:
+        VITE_MAPBOX_TOKEN: ${VITE_MAPBOX_TOKEN}
+        VITE_API_URL: /api/disasters
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "8080:80"

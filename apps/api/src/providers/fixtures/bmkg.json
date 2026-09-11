@@ -1,0 +1,28 @@
+{
+  "Infogempa": {
+    "gempa": [
+      {
+        "Tanggal": "11 Sep 2026",
+        "Jam": "00:00:00 WIB",
+        "DateTime": "2026-09-10T17:00:00+00:00",
+        "Coordinates": "-6.18,106.82",
+        "Lintang": "6.18 LS",
+        "Bujur": "106.82 BT",
+        "Magnitude": "6.1",
+        "Kedalaman": "10 km",
+        "Wilayah": "Jakarta",
+        "Potensi": "Tidak berpotensi tsunami"
+      },
+      {
+        "Tanggal": "10 Sep 2026",
+        "Jam": "23:59:59 WIB",
+        "DateTime": "2026-09-10T16:59:59+00:00",
+        "Coordinates": "-7.1,110.4",
+        "Magnitude": "5.2",
+        "Kedalaman": "20 km",
+        "Wilayah": "Jawa Tengah",
+        "Potensi": "Tidak berpotensi tsunami"
+      }
+    ]
+  }
+}

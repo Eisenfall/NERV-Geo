@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+credentials*.json
+apps/web/public/audio/japan-eas.mp3
+playwright-report/
+test-results/
+*.log
+.DS_Store
